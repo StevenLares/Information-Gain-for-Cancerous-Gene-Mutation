@@ -29,8 +29,9 @@ connection = cx_Oracle.connect(user=user, password=password, dsn=dsn)
 
 
 
-#Mostly used as a way to work with data in the host language
-#query: String containing Oracle SQL query
+#Convert a SQL table to a Pandas Dataframe for easier computation within Python.
+#Relational operations should be mostly done within SQL, however, convert to Dataframe
+#for computations not possible in SQL
 def convertToDataframe(query):
     csr = connection.cursor() #creates a cursor
     csr.execute(query) #exectutes user given query
@@ -156,7 +157,7 @@ WHERE STATUS = 1
 
 
 
-#will hold all dataframes for each gene
+#will hold all Conditional Distribution Tables (CDT) for each gene
 CDT_dict = {}
 
 
@@ -223,30 +224,6 @@ for gene in IG_READY_attributes:
         indexer = indexer + 1
 
 #END of dictionary and table creation --------------------------------------------------------------
-
-
-
-
-
-
-
-#Table for Problem B, sorted by IG
-top5withO_CNT = persistentDF.sort_values(by = "IG", ascending = False).head(5)
-
-#Created for Project Write Up as response to Problem B, sorted by O CNT and commented out
-#top5sortedByO_CNT = persistentDF.sort_values(by = "O CNT", ascending = False).head(5)
-
-#Table for Problem A, sorted by IG
-top5withoutO_CNT = top5withO_CNT[["Gene ID", "IG"]]
-
-
-
-        
-#save both to csv
-
-top5withoutO_CNT.to_csv(saveDir + "Problem A Table.csv", index = False)
-
-top5withO_CNT.to_csv(saveDir + "Problem B Table.csv", index = False)
 
 
 
